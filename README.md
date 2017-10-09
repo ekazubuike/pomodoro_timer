@@ -1,0 +1,1 @@
+A JavaScript timer to help you practice using the Pomodoro technique.
