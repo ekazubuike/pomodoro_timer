@@ -47,6 +47,7 @@ function startTimer() {
 }
 
 function resetTimer() {
+    clearInterval(x);
     time = 1500000;
     display.textContent = "25:00";
     isBreak = false;
