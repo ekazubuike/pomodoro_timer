@@ -1,6 +1,12 @@
-const display = document.querySelector("#display");
+const   display     = document.querySelector("#display"),
+        startBtn    = document.querySelector("#start"),
+        pauseBtn    = document.querySelector("#pause"),
+        resetBtn    = document.querySelector("#reset");
 
-let time = 1500000;
+let time,
+    x;
+    
+resetTimer();
 
 function toTime (ms) {
 	let m = Math.floor(ms/60000);
@@ -16,4 +22,19 @@ function toTime (ms) {
 	}
 }
 
-const x = setInterval(function(){toTime(time)}, 1000);
+function startTimer() {
+    x = setInterval(function(){toTime(time)}, 1000);
+}
+
+function resetTimer() {
+    time = 1500000;
+    display.textContent = "25:00";
+}
+
+function pauseTimer() {
+    clearInterval(x);
+}
+
+startBtn.addEventListener("click", startTimer);
+pauseBtn.addEventListener("click", pauseTimer);
+resetBtn.addEventListener("click", resetTimer);
