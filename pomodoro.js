@@ -1,3 +1,4 @@
+//selectors
 const   display     = document.querySelector("#display"),
         startBtn    = document.querySelector("#start"),
         pauseBtn    = document.querySelector("#pause"),
@@ -7,7 +8,12 @@ const   display     = document.querySelector("#display"),
 let time,
     x,
     isBreak = false;
-    
+//set up chime sound    
+const pinwheel = new Howl({
+        src: ['assets/sounds/pinwheel.mp3']
+      });
+
+//initialize timer    
 resetTimer();
 
 function toTime (ms) {
@@ -30,21 +36,23 @@ function toTime (ms) {
 
 function switchMode() {
     if (isBreak === false) {
-      clearInterval(x);
-      isBreak = true;
-      time = 300000;
-      setTimeout(function(){
-      	message.textContent = "It's break time!";
-        startTimer();
-      }, 1000);
+		pinwheel.play();
+		clearInterval(x);
+		isBreak = true;
+		time = 300000;
+		setTimeout(function(){
+		  message.textContent = "It's break time!";
+		startTimer();
+		}, 1000);
     } else if (isBreak) {
-      clearInterval(x);
-      isBreak = false;
-      
-      setTimeout(function(){
-        resetTimer();
-        startTimer();
-      }, 1000);
+    	pinwheel.play();
+		clearInterval(x);
+		isBreak = false;
+		
+		setTimeout(function(){
+		resetTimer();
+		startTimer();
+		}, 1000);
     }
 }
 
