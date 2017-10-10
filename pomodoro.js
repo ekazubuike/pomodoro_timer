@@ -1,7 +1,8 @@
 const   display     = document.querySelector("#display"),
         startBtn    = document.querySelector("#start"),
         pauseBtn    = document.querySelector("#pause"),
-        resetBtn    = document.querySelector("#reset");
+        resetBtn    = document.querySelector("#reset"),
+        message		= document.querySelector("#message");
 
 let time,
     x,
@@ -22,24 +23,29 @@ function toTime (ms) {
 	display.textContent = m + ":" + s;
 	if (time > 0) {
 	  time-= 1000;
-	} else if (time === 0) {
-	    if (isBreak === false) {
-	      clearInterval(x);
-	      isBreak = true;
-	      time = 300000;
-	      setTimeout(function(){
-	        startTimer();
-	      }, 1000);
-	    } else if (isBreak) {
-	      clearInterval(x);
-	      isBreak = false;
-	      
-	      setTimeout(function(){
-	        resetTimer();
-	        startTimer();
-	      }, 1000);
-	    }
+	} else {
+		switchMode();
 	}
+}
+
+function switchMode() {
+    if (isBreak === false) {
+      clearInterval(x);
+      isBreak = true;
+      time = 300000;
+      setTimeout(function(){
+      	message.textContent = "It's break time!";
+        startTimer();
+      }, 1000);
+    } else if (isBreak) {
+      clearInterval(x);
+      isBreak = false;
+      
+      setTimeout(function(){
+        resetTimer();
+        startTimer();
+      }, 1000);
+    }
 }
 
 function startTimer() {
@@ -51,6 +57,7 @@ function resetTimer() {
     time = 1500000;
     display.textContent = "25:00";
     isBreak = false;
+    message.textContent = "Get to work!";
 }
 
 function pauseTimer() {
