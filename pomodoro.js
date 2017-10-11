@@ -1,4 +1,4 @@
-//selectors
+//HTML DOM selectors
 const   display     = document.querySelector("#display"),
         startBtn    = document.querySelector("#start"),
         pauseBtn    = document.querySelector("#pause"),
@@ -11,11 +11,13 @@ const   display     = document.querySelector("#display"),
         breakPlus	= document.querySelector("#breakPlus"),
         breakMinus	= document.querySelector("#breakMinus");
 
+//time and mode variables
 let time,
 	m,
 	s,
     x,
     isBreak = false;
+    
 //set up chime sound    
 const pinwheel = new Howl({
         src: ['assets/sounds/pinwheel.mp3']
@@ -24,14 +26,18 @@ const pinwheel = new Howl({
 //initialize timer    
 resetTimer();
 
+//is the input a number?
 function isNum(num){
-	if(!isNaN(num)) {
+	if(!isNaN(num) && Number(num) >= 0) {
 	    time = Number(num) * 60000;
     } else {
-    	return alert("Numbers only!");
+    	workTime.value = "1";
+    	breakTime.value = "1";
+    	return alert("Positive integers only!");
     }
 }
 
+//convert ms to human time and display
 function toTime (ms) {
 	m = Math.floor(ms/60000);
 	if (m < 10) {
@@ -44,6 +50,7 @@ function toTime (ms) {
 	showTime();
 }
 
+//display time and switch between work and break modes
 function showTime() {	
 	display.textContent = m + ":" + s;
 	if (time > 0) {
@@ -53,6 +60,7 @@ function showTime() {
 	}
 }
 
+//change modes
 function switchMode() {
     if (isBreak === false) {
 		pinwheel.play();
@@ -76,7 +84,11 @@ function switchMode() {
 }
 
 function startTimer() {
+	isNum(breakTime.value);
+	isNum(workTime.value);
+	toTime(time);
     x = setInterval(function(){toTime(time)}, 1000);
+    startBtn.disabled = true;
 }
 
 function resetTimer() {
@@ -87,6 +99,7 @@ function resetTimer() {
 
 function pauseTimer() {
     clearInterval(x);
+    startBtn.disabled = false;
 }
 
 function changeTime() {
@@ -95,6 +108,7 @@ function changeTime() {
 	toTime(time);
 }
 
+//event listeners
 workTime.addEventListener("change", function(){
 	changeTime();
 });
