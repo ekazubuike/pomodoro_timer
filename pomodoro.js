@@ -84,8 +84,6 @@ function switchMode() {
 }
 
 function startTimer() {
-	isNum(breakTime.value);
-	isNum(workTime.value);
 	toTime(time);
     x = setInterval(function(){toTime(time)}, 1000);
     startBtn.disabled = true;
