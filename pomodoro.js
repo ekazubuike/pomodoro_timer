@@ -3,9 +3,17 @@ const   display     = document.querySelector("#display"),
         startBtn    = document.querySelector("#start"),
         pauseBtn    = document.querySelector("#pause"),
         resetBtn    = document.querySelector("#reset"),
-        message		= document.querySelector("#message");
+        message		= document.querySelector("#message"),
+        workTime	= document.querySelector("#work"),
+        breakTime	= document.querySelector("#break"),
+        workPlus	= document.querySelector("#workPlus"),
+        workMinus	= document.querySelector("#workMinus"),
+        breakPlus	= document.querySelector("#breakPlus"),
+        breakMinus	= document.querySelector("#breakMinus");
 
 let time,
+	m,
+	s,
     x,
     isBreak = false;
 //set up chime sound    
@@ -16,16 +24,27 @@ const pinwheel = new Howl({
 //initialize timer    
 resetTimer();
 
+function isNum(num){
+	if(!isNaN(num)) {
+	    time = Number(num) * 60000;
+    } else {
+    	return alert("Numbers only!");
+    }
+}
+
 function toTime (ms) {
-	let m = Math.floor(ms/60000);
+	m = Math.floor(ms/60000);
 	if (m < 10) {
 		m = "0" + m;
 	}
-	let s = Math.floor((ms%60000)/1000);
+	s = Math.floor((ms%60000)/1000);
 	if (s < 10) {
 		s = "0" + s;
 	}
-	
+	showTime();
+}
+
+function showTime() {	
 	display.textContent = m + ":" + s;
 	if (time > 0) {
 	  time-= 1000;
@@ -39,7 +58,7 @@ function switchMode() {
 		pinwheel.play();
 		clearInterval(x);
 		isBreak = true;
-		time = 300000;
+		isNum(breakTime.value);
 		setTimeout(function(){
 		  message.textContent = "It's break time!";
 		startTimer();
@@ -62,8 +81,8 @@ function startTimer() {
 
 function resetTimer() {
     clearInterval(x);
-    time = 1500000;
-    display.textContent = "25:00";
+    isNum(workTime.value);
+    toTime(time);
     isBreak = false;
     message.textContent = "Get to work!";
 }
@@ -75,3 +94,17 @@ function pauseTimer() {
 startBtn.addEventListener("click", startTimer);
 pauseBtn.addEventListener("click", pauseTimer);
 resetBtn.addEventListener("click", resetTimer);
+workPlus.addEventListener("click", function(){
+	workTime.value++;
+	isNum(workTime.value);
+});
+workMinus.addEventListener("click", function(){
+	workTime.value--;
+	isNum(workTime.value);
+});
+breakPlus.addEventListener("click", function(){
+	breakTime.value++;
+});
+breakMinus.addEventListener("click", function(){
+	breakTime.value--;
+});
