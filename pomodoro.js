@@ -56,7 +56,7 @@ function showTime() {
 function switchMode() {
     if (isBreak === false) {
 		pinwheel.play();
-		clearInterval(x);
+		pauseTimer();
 		isBreak = true;
 		isNum(breakTime.value);
 		setTimeout(function(){
@@ -65,7 +65,7 @@ function switchMode() {
 		}, 1000);
     } else if (isBreak) {
     	pinwheel.play();
-		clearInterval(x);
+		pauseTimer();
 		isBreak = false;
 		
 		setTimeout(function(){
@@ -80,9 +80,7 @@ function startTimer() {
 }
 
 function resetTimer() {
-    clearInterval(x);
-    isNum(workTime.value);
-    toTime(time);
+	changeTime();
     isBreak = false;
     message.textContent = "Get to work!";
 }
@@ -91,16 +89,29 @@ function pauseTimer() {
     clearInterval(x);
 }
 
+function changeTime() {
+	pauseTimer();
+	isNum(workTime.value);
+	toTime(time);
+}
+
+workTime.addEventListener("change", function(){
+	changeTime();
+});
 startBtn.addEventListener("click", startTimer);
 pauseBtn.addEventListener("click", pauseTimer);
 resetBtn.addEventListener("click", resetTimer);
 workPlus.addEventListener("click", function(){
+	pauseTimer();
 	workTime.value++;
 	isNum(workTime.value);
+	toTime(time);
 });
 workMinus.addEventListener("click", function(){
+	pauseTimer();
 	workTime.value--;
 	isNum(workTime.value);
+	toTime(time);
 });
 breakPlus.addEventListener("click", function(){
 	breakTime.value++;
